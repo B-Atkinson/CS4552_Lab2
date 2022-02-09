@@ -22,13 +22,13 @@ class Lab1(Topo):
         rightHost = net.addHost( 'h2' )
         
         # Add switches
-        switchA = net.addSwitch( 'A' )
-        switchA2 = net.addSwitch( 'A2' )
-        switchB = net.addSwitch( 'B' )
-        switchC = net.addSwitch( 'C' )
-        switchD = net.addSwitch( 'D' )
-        switchE = net.addSwitch( 'E' )
-        switchF = net.addSwitch( 'F' )
+        switchA = net.addSwitch( 's1' )
+        switchA2 = net.addSwitch( 's2' )
+        switchB = net.addSwitch( 's3' )
+        switchC = net.addSwitch( 's4' )
+        switchD = net.addSwitch( 's5' )
+        switchE = net.addSwitch( 's6' )
+        switchF = net.addSwitch( 's7' )
         
         # Add OpenFlow controller
         c0 = net.addController(name='c0',controller=Controller)
@@ -49,13 +49,13 @@ class Lab1(Topo):
         c0.start()
 
         info( '*** Starting switches\n')
-        net.get('A').start([c0])
-        net.get('A2').start([c0])
-        net.get('B').start([c0])
-        net.get('C').start([c0])
-        net.get('D').start([c0])
-        net.get('E').start([c0])
-        net.get('F').start([c0])
+        net.get('s1').start([c0])
+        net.get('s2').start([c0])
+        net.get('s3').start([c0])
+        net.get('s4').start([c0])
+        net.get('s5').start([c0])
+        net.get('s6').start([c0])
+        net.get('s7').start([c0])
 
         info( '*** Post configure switches and hosts\n')
         CLI(net)
