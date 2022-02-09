@@ -15,32 +15,34 @@ from mininet.util import dumpNodeConnections
 class Lab1(Topo):
     '''The topology from Lab 1 with switches [A,A2,B,C,D,E,F], two hosts [H1, H2], and an SDN controller connected to switch D.'''
     def build(self):
+        net = Mininet( topo=None, build=False)
+        
         # Add hosts
-        leftHost = self.addHost( 'h1' )
-        rightHost = self.addHost( 'h2' )
+        leftHost = net.addHost( 'h1' )
+        rightHost = net.addHost( 'h2' )
         
         # Add switches
-        switchA = self.addSwitch( 'A' )
-        switchA2 = self.addSwitch( 'A2' )
-        switchB = self.addSwitch( 'B' )
-        switchC = self.addSwitch( 'C' )
-        switchD = self.addSwitch( 'D' )
-        switchE = self.addSwitch( 'E' )
-        switchF = self.addSwitch( 'F' )
+        switchA = net.addSwitch( 'A' )
+        switchA2 = net.addSwitch( 'A2' )
+        switchB = net.addSwitch( 'B' )
+        switchC = net.addSwitch( 'C' )
+        switchD = net.addSwitch( 'D' )
+        switchE = net.addSwitch( 'E' )
+        switchF = net.addSwitch( 'F' )
         
         # Add OpenFlow controller
-        c0 = self.addController(name='c0',controller=Controller)
+        c0 = net.addController(name='c0',controller=Controller)
 
         # Add links
-        self.addLink( leftHost, switchA )
-        self.addLink( switchA, switchA2 )
-        self.addLink( switchA2, switchB )
-        self.addLink( switchB, switchC )
-        self.addLink( switchC, switchD )
-        self.addLink( switchC, switchE )
-        self.addLink( switchE, switchF )
-        self.addLink( switchD, switchF )
-        self.addLink( switchF, rightHost )
+        net.addLink( leftHost, switchA )
+        net.addLink( switchA, switchA2 )
+        net.addLink( switchA2, switchB )
+        net.addLink( switchB, switchC )
+        net.addLink( switchC, switchD )
+        net.addLink( switchC, switchE )
+        net.addLink( switchE, switchF )
+        net.addLink( switchD, switchF )
+        net.addLink( switchF, rightHost )
 
         # Start network
         info( '*** Starting controllers\n')
@@ -62,8 +64,7 @@ class Lab1(Topo):
 
 if __name__ == '__main__': 
     setLogLevel('info')  
-    topo = Lab1()
-    net = Mininet(topo)
+    net = Lab1()
     net.start()
     
     print('\n\nHost connections:')
