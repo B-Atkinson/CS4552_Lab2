@@ -64,7 +64,7 @@ class Lab1(Topo):
 
 if __name__ == '__main__': 
     setLogLevel('info')  
-    net = Lab1()
+    net = Mininet(Lab1())
     net.start()
     
     print('\n\nHost connections:')
