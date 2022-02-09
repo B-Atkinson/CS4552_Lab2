@@ -48,8 +48,8 @@ def Lab1():
     
     # Start network
     info( '*** Starting controllers')
-    net.start()
     switchD.start([c0])
+    net.start()
     
     
     info( '*** Starting switches\n')
