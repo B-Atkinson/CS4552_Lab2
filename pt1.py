@@ -6,8 +6,8 @@ different controllers, by creating a custom Switch() subclass.
 """
 from mininet.topo import Topo
 from mininet.net import Mininet
-from mininet.topolib import TreeTopo
-from mininet.log import setLogLevel
+from mininet.node import Controller
+from mininet.log import setLogLevel, info
 from mininet.cli import CLI
 from mininet.util import dumpNodeConnections
 
@@ -28,8 +28,8 @@ class Lab1(Topo):
         switchE = self.addSwitch( 'E' )
         switchF = self.addSwitch( 'F' )
         
-        # Add controller
-        controller = self.addController('MAIN')
+        # Add OpenFlow controller
+        c0 = self.addController(name='c0',controller=Controller)
 
         # Add links
         self.addLink( leftHost, switchA )
@@ -41,6 +41,24 @@ class Lab1(Topo):
         self.addLink( switchE, switchF )
         self.addLink( switchD, switchF )
         self.addLink( switchF, rightHost )
+
+        # Start network
+        info( '*** Starting controllers\n')
+        c0.start()
+
+        info( '*** Starting switches\n')
+        net.get('A').start([c0])
+        net.get('A2').start([c0])
+        net.get('B').start([c0])
+        net.get('C').start([c0])
+        net.get('D').start([c0])
+        net.get('E').start([c0])
+        net.get('F').start([c0])
+
+        info( '*** Post configure switches and hosts\n')
+        CLI(net)
+        
+
 
 if __name__ == '__main__': 
     setLogLevel('info')  
