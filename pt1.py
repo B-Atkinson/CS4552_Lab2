@@ -32,7 +32,7 @@ def Lab1():
     
     # Add OpenFlow controller
     info( '*** Adding controllers')
-    c0 = net.addController(name='c0',port=6684)
+    c0 = net.addController(name='c0',port=6634)
     
     # Add links
     info( '*** Adding links')
