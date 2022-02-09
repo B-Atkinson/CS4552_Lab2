@@ -13,7 +13,7 @@ from mininet.util import dumpNodeConnections
 
 
 def Lab1():
-    net = Mininet( switch=OVSSwitch)
+    net = Mininet(switch=OVSSwitch)
     
     # Add hosts
     info( '*** Adding hosts')
@@ -52,12 +52,12 @@ def Lab1():
     
     info( '*** Starting switches\n')
     switchA.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
-    switchA2.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
-    switchB.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
-    switchC.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
-    switchD.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
-    switchE.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
-    switchF.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
+    switchA2.cmd('ovs-vsct1 set bridge s2 stp-enable=true')
+    switchB.cmd('ovs-vsct1 set bridge s3 stp-enable=true')
+    switchC.cmd('ovs-vsct1 set bridge s4 stp-enable=true')
+    switchD.cmd('ovs-vsct1 set bridge s5 stp-enable=true')
+    switchE.cmd('ovs-vsct1 set bridge s6 stp-enable=true')
+    switchF.cmd('ovs-vsct1 set bridge s7 stp-enable=true')
 
     info('***Running network***')
     CLI(net)
