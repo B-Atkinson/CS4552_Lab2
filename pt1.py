@@ -55,6 +55,11 @@ def Lab1():
     switchE.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
     switchF.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
 
+    info('***Running network***')
+    CLI(net)
+    
+    info('***Stopping network')
+    net.stop()
     
 if __name__ == '__main__': 
     setLogLevel('info') 
