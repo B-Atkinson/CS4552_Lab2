@@ -16,10 +16,12 @@ def Lab1():
     net = Mininet( switch=OVSSwitch)
     
     # Add hosts
+    info( '*** Adding hosts')
     leftHost = net.addHost( 'h1', ip='10.0.2.1' )
     rightHost = net.addHost( 'h2', ip='10.0.2.2' )
     
     # Add switches
+    info( '*** Adding switches')
     switchA = net.addSwitch( 's1', cls=OVSSwitch )
     switchA2 = net.addSwitch( 's2', cls=OVSSwitch )
     switchB = net.addSwitch( 's3', cls=OVSSwitch )
@@ -29,9 +31,11 @@ def Lab1():
     switchF = net.addSwitch( 's7', cls=OVSSwitch )
     
     # Add OpenFlow controller
+    info( '*** Adding controllers')
     c0 = net.addController(name='c0',port=6684)
     
     # Add links
+    info( '*** Adding links')
     net.addLink( leftHost, switchA )
     net.addLink( switchA, switchA2 )
     net.addLink( switchA2, switchB )
@@ -43,7 +47,7 @@ def Lab1():
     net.addLink( switchF, rightHost )
     
     # Start network
-    info( '*** Starting controllers\n')
+    info( '*** Starting controllers')
     switchD.start([c0])
     
     info( '*** Starting switches\n')
