@@ -18,7 +18,7 @@ def Lab1():
     # Add hosts
     info( '*** Adding hosts')
     leftHost = net.addHost( 'h1', ip='10.0.2.1' )
-    rightHost = net.addHost( 'h2', ip='10.0.2.2' )
+    rightHost = net.addHost( 'h2', ip='10.0.1.2' )
     
     # Add switches
     info( '*** Adding switches')
