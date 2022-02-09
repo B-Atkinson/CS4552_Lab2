@@ -49,6 +49,7 @@ def Lab1():
     # Start network
     info( '*** Starting controllers')
     switchD.start([c0])
+    net.start()
     
     info( '*** Starting switches\n')
     switchA.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
