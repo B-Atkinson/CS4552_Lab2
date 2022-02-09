@@ -12,7 +12,7 @@ from mininet.cli import CLI
 from mininet.util import dumpNodeConnections
 
 
-def Lab1(self):
+def Lab1():
     net = Mininet( switch=OVSSwitch)
     
     # Add hosts
@@ -54,17 +54,7 @@ def Lab1(self):
     switchD.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
     switchE.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
     switchF.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
-    
-    info( '*** Post configure switches and hosts\n')
-    CLI(net)
-        
 
-    print('\n\nHost connections:')
-    dumpNodeConnections(net.hosts)
-    
-    print( '\n\nTesting network connectivity' )
-    net.pingAll()
-    net.stop()
     
 if __name__ == '__main__': 
     setLogLevel('info') 
