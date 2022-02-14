@@ -18,7 +18,7 @@ def Lab1():
     # Add hosts
     info( '*** Adding hosts')
     leftHost = net.addHost( 'h1', ip='10.0.2.1' )
-    rightHost = net.addHost( 'h2', ip='10.0.1.2' )
+    rightHost = net.addHost( 'h2', ip='10.0.1.1' )
     
     # Add switches
     info( '*** Adding switches')
@@ -53,13 +53,13 @@ def Lab1():
     
     
     info( '*** Starting switches\n')
-    switchA.cmd('ovs-vsct1 set bridge s1 stp-enable=true')
-    switchA2.cmd('ovs-vsct1 set bridge s2 stp-enable=true')
-    switchB.cmd('ovs-vsct1 set bridge s3 stp-enable=true')
-    switchC.cmd('ovs-vsct1 set bridge s4 stp-enable=true')
-    switchD.cmd('ovs-vsct1 set bridge s5 stp-enable=true')
-    switchE.cmd('ovs-vsct1 set bridge s6 stp-enable=true')
-    switchF.cmd('ovs-vsct1 set bridge s7 stp-enable=true')
+    switchA.cmd('ovs-vsctl set bridge s1 stp-enable=true')
+    switchA2.cmd('ovs-vsctl set bridge s2 stp-enable=true')
+    switchB.cmd('ovs-vsctl set bridge s3 stp-enable=true')
+    switchC.cmd('ovs-vsctl set bridge s4 stp-enable=true')
+    switchD.cmd('ovs-vsctl set bridge s5 stp-enable=true')
+    switchE.cmd('ovs-vsctl set bridge s6 stp-enable=true')
+    switchF.cmd('ovs-vsctl set bridge s7 stp-enable=true')
 
     info('***Running network***')
     CLI(net)
