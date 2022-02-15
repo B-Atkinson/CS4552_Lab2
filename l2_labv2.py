@@ -87,15 +87,30 @@ class SimpleSwitch12(app_manager.RyuApp):
                     self.icmp_count = self.icmp_count+1
                     self.logger.info("received an ICMP packet, total: %s", self.icmp_count)
                     self.logger.info("srcIP: %s, dstIP: %s", _ip.src, _ip.dst)
+                    match = datapath.ofproto_parser.OFPMatch(in_port=in_port,
+                                                 eth_dst=dst,
+                                                 eth_src=src)
                     
-                    if (_ip.src, _ip.dst) in self.icmpDict:
-                        self.icmpDict[(_ip.src, _ip.dst)] += 1
+                    if match in self.icmpDict:
+                        self.icmpDict[match] += 1
                     else:
-                        self.icmpDict[(_ip.src, _ip.dst)] = 1
+                        self.icmpDict[match] = 1
                     
-                    if self.icmpDict[(_ip.src, _ip.dst)] > 10:
+                    if self.icmpDict[match] > 10:
                         #drop packets
                         self.logger.info("exceeded 10 flows, dropping packet.")
+                        instruction = [
+                                datapath.ofproto_parser.OFPInstructionActions(ofproto.OFPIT_CLEAR_ACTIONS, [])
+                                ]
+                        
+                        msg = datapath.ofproto_parser.OFPFlowMod(self.datapath,
+                            table_id = 0,
+                            priority = 1,
+                            command = ofproto.OFPFC_ADD,
+                            match = match,
+                            instructions = instruction,
+                            
+                            )
                         return
                 except NameError:
                     self.logger.info("come here!!!")
