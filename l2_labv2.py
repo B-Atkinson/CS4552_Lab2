@@ -103,8 +103,8 @@ class SimpleSwitch12(app_manager.RyuApp):
                     print(3)
                     # # self.logger.info("srcIP: %s, dstIP: %s", _ip.src, _ip.dst)
                     match = datapath.ofproto_parser.OFPMatch(in_port=in_port,
-                                                 eth_dst=dst,
-                                                 eth_src=src)
+                                                 eth_dst=_ip.dst,
+                                                 eth_src=_ip.src)
                     print(4)
                     
                     if match in self.icmpDict:
