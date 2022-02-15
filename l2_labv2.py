@@ -38,6 +38,7 @@ class SimpleSwitch12(app_manager.RyuApp):
 
         # [4552] start of sample custom code (block 1)
         self.icmp_count = 0
+        self.icmpDict = {}
         # [4552] end of sample custom code (block 1)
 
     def add_flow(self, datapath, port, dst, src, actions):
@@ -48,10 +49,10 @@ class SimpleSwitch12(app_manager.RyuApp):
                                                  eth_src=src)
         inst = [datapath.ofproto_parser.OFPInstructionActions(
                 ofproto.OFPIT_APPLY_ACTIONS, actions)]
-
+        
         mod = datapath.ofproto_parser.OFPFlowMod(
             datapath=datapath, cookie=0, cookie_mask=0, table_id=0,
-            command=ofproto.OFPFC_ADD, idle_timeout=0, hard_timeout=0,
+            command=ofproto.OFPFC_ADD, idle_timeout=0, hard_timeout=4,
             priority=0, buffer_id=ofproto.OFP_NO_BUFFER,
             out_port=ofproto.OFPP_ANY,
             out_group=ofproto.OFPG_ANY,
@@ -80,10 +81,20 @@ class SimpleSwitch12(app_manager.RyuApp):
             _icmp = pkt.get_protocol(icmp.icmp)
             if _ip:
                 self.logger.info("srcIP: %s, dstIP: %s", _ip.src, _ip.dst)
+                
             if _icmp:
                 try:
                     self.icmp_count = self.icmp_count+1
                     self.logger.info("received an ICMP packet, total: %s", self.icmp_count)
+                    
+                    if (_ip.src, _ip.dst) in self.icmpDict:
+                        self.icmpDict[(_ip.src, _ip.dst)] += 1
+                    else:
+                        self.icmpDict[(_ip.src, _ip.dst)] = 1
+                    
+                    if self.icmpDict[(_ip.src, _ip.dst)] > 30:
+                        #drop packets
+                        return
                 except NameError:
                     self.logger.info("come here!!!")
                     self.icmp_count = 1
