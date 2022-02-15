@@ -52,7 +52,7 @@ class SimpleSwitch12(app_manager.RyuApp):
         
         mod = datapath.ofproto_parser.OFPFlowMod(
             datapath=datapath, cookie=0, cookie_mask=0, table_id=0,
-            command=ofproto.OFPFC_ADD, idle_timeout=0, hard_timeout=1,
+            command=ofproto.OFPFC_ADD, idle_timeout=0, hard_timeout=4,
             priority=0, buffer_id=ofproto.OFP_NO_BUFFER,
             out_port=ofproto.OFPP_ANY,
             out_group=ofproto.OFPG_ANY,
@@ -108,7 +108,7 @@ class SimpleSwitch12(app_manager.RyuApp):
                     else:
                         self.icmpDict[(eth.src,eth.dst)] = 1
                     
-                    if self.icmpDict[(eth.src,eth.dst)] > 3:
+                    if self.icmpDict[(eth.src,eth.dst)] > 10:
                         #drop packets
                         self.logger.info("exceeded 10 flows, dropping packet.")
                         
