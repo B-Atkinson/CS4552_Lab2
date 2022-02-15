@@ -91,23 +91,21 @@ class SimpleSwitch12(app_manager.RyuApp):
         # [4552] start of sample custom code (block 2)
         self.logger.info("ether_type: %s", eth.ethertype)
         if eth.ethertype == ether_types.ETH_TYPE_IP:
-            # self.logger.info("received an IP packet")
+            self.logger.info("received an IP packet")
             _ip = pkt.get_protocol(ipv4.ipv4)
             _icmp = pkt.get_protocol(icmp.icmp)
             if _ip:
-                # self.logger.info("srcIP: %s, dstIP: %s", _ip.src, _ip.dst)
-                pass
+                self.logger.info("srcIP: %s, dstIP: %s", _ip.src, _ip.dst)
+                
             if _icmp:
                 try:
                     self.icmp_count = self.icmp_count+1
                     self.logger.info("received an ICMP packet, total: %s", self.icmp_count)
-                    # self.logger.info("srcIP: %s, dstIP: %s", _ip.src, _ip.dst)
                     
                     if (eth.src,eth.dst) in self.icmpDict:
                         self.icmpDict[(eth.src,eth.dst)] += 1
                     else:
                         self.icmpDict[(eth.src,eth.dst)] = 1
-                    self.logger.info("flow instance:{}".format(self.icmpDict[(eth.src,eth.dst)]))
                     if self.icmpDict[(eth.src,eth.dst)] > 10:
                         #drop packets
                         self.logger.info("exceeded 10 flows, dropping packet.")
