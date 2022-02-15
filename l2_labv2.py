@@ -61,18 +61,18 @@ class SimpleSwitch12(app_manager.RyuApp):
         
     def blockFlow(self, datapath, port, dst, src):
         instruction = [datapath.ofproto_parser.OFPInstructionActions(datapath.ofproto.OFPIT_CLEAR_ACTIONS, [])]
-        print(11)
+        
         
         match = datapath.ofproto_parser.OFPMatch(in_port=port,eth_dst=dst,eth_src=src)
-        print(12)
+        
         msg = datapath.ofproto_parser.OFPFlowMod(datapath=datapath, table_id = 0, priority = 1,
                             command = datapath.ofproto.OFPFC_ADD,
                             match = match,
                             instructions = instruction
                             )
-        print(13)
+        
         datapath.send_msg(msg)
-        print(14)
+        
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def _packet_in_handler(self, ev):
@@ -99,30 +99,21 @@ class SimpleSwitch12(app_manager.RyuApp):
                 pass
             if _icmp:
                 try:
-                    print(1)
                     self.icmp_count = self.icmp_count+1
-                    print(2)
                     self.logger.info("received an ICMP packet, total: %s", self.icmp_count)
-                    print(3)
-                    # # self.logger.info("srcIP: %s, dstIP: %s", _ip.src, _ip.dst)
-                    print(4)
+                    self.logger.info("srcIP: %s, dstIP: %s", _ip.src, _ip.dst)
                     
                     if (eth.src,eth.dst) in self.icmpDict:
-                        print(5)
                         self.icmpDict[(eth.src,eth.dst)] += 1
-                        print(6)
                     else:
-                        print(7)
                         self.icmpDict[(eth.src,eth.dst)] = 1
-                        print(8)
                     
                     if self.icmpDict[(eth.src,eth.dst)] > 3:
-                        print(9)
                         #drop packets
                         self.logger.info("exceeded 10 flows, dropping packet.")
-                        print(10)
+                        
                         self.blockFlow(datapath, in_port, eth.dst, eth.src)
-                        print(15)
+                        
                         return
                 except NameError:
                     self.logger.info("come here!!!")
