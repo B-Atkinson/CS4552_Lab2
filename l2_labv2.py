@@ -58,6 +58,18 @@ class SimpleSwitch12(app_manager.RyuApp):
             out_group=ofproto.OFPG_ANY,
             flags=0, match=match, instructions=inst)
         datapath.send_msg(mod)
+        
+    def blockFlow(self, datapath, port, dst, src):
+        instruction = [datapath.ofproto_parser.OFPInstructionActions(datapath.ofproto.OFPIT_CLEAR_ACTIONS, [])]
+        
+        match = datapath.ofproto_parser.OFPMatch(in_port=port,eth_dst=dst,eth_src=src)
+                        
+        msg = datapath.ofproto_parser.OFPFlowMod(self.datapath, table_id = 0, priority = 1,
+                            command = datapath.ofproto.OFPFC_ADD,
+                            match = match,
+                            instructions = instruction
+                            )
+        datapath.send_msg(msg)
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def _packet_in_handler(self, ev):
@@ -81,7 +93,7 @@ class SimpleSwitch12(app_manager.RyuApp):
             _icmp = pkt.get_protocol(icmp.icmp)
             if _ip:
                 # self.logger.info("srcIP: %s, dstIP: %s", _ip.src, _ip.dst)
-                ...
+                pass
             if _icmp:
                 try:
                     self.icmp_count = self.icmp_count+1
@@ -91,6 +103,7 @@ class SimpleSwitch12(app_manager.RyuApp):
                                                  eth_dst=dst,
                                                  eth_src=src)
                     
+                    
                     if match in self.icmpDict:
                         self.icmpDict[match] += 1
                     else:
@@ -99,18 +112,7 @@ class SimpleSwitch12(app_manager.RyuApp):
                     if self.icmpDict[match] > 3:
                         #drop packets
                         self.logger.info("exceeded 10 flows, dropping packet.")
-                        instruction = [
-                                datapath.ofproto_parser.OFPInstructionActions(ofproto.OFPIT_CLEAR_ACTIONS, [])
-                                ]
-                        
-                        msg = datapath.ofproto_parser.OFPFlowMod(self.datapath,
-                            table_id = 0,
-                            priority = 1,
-                            command = ofproto.OFPFC_ADD,
-                            match = match,
-                            instructions = instruction,
-                            
-                            )
+                        self.blockFlow(datapath, in_port, _ip.dst, _ip.src)
                         return
                 except NameError:
                     self.logger.info("come here!!!")
