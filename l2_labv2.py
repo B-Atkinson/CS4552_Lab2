@@ -65,7 +65,7 @@ class SimpleSwitch12(app_manager.RyuApp):
         
         match = datapath.ofproto_parser.OFPMatch(in_port=port,eth_dst=dst,eth_src=src)
         print(12)
-        msg = datapath.ofproto_parser.OFPFlowMod(self.datapath, table_id = 0, priority = 1,
+        msg = datapath.ofproto_parser.OFPFlowMod(datapath=datapath, table_id = 0, priority = 1,
                             command = datapath.ofproto.OFPFC_ADD,
                             match = match,
                             instructions = instruction
