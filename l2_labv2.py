@@ -102,18 +102,15 @@ class SimpleSwitch12(app_manager.RyuApp):
                     self.logger.info("received an ICMP packet, total: %s", self.icmp_count)
                     print(3)
                     # # self.logger.info("srcIP: %s, dstIP: %s", _ip.src, _ip.dst)
-                    match = datapath.ofproto_parser.OFPMatch(in_port=in_port,
-                                                 eth_dst=_ip.dst,
-                                                 eth_src=_ip.src)
                     print(4)
                     
-                    if match in self.icmpDict:
+                    if (_ip.src,_ip.dst) in self.icmpDict:
                         print(5)
-                        self.icmpDict[match] += 1
+                        self.icmpDict[(_ip.src,_ip.dst)] += 1
                         print(6)
                     else:
                         print(7)
-                        self.icmpDict[match] = 1
+                        self.icmpDict[(_ip.src,_ip.dst)] = 1
                         print(8)
                     
                     # if self.icmpDict[match] > 3:
