@@ -92,7 +92,7 @@ class SimpleSwitch12(app_manager.RyuApp):
                     else:
                         self.icmpDict[(_ip.src, _ip.dst)] = 1
                     
-                    if self.icmpDict[(_ip.src, _ip.dst)] > 30:
+                    if self.icmpDict[(_ip.src, _ip.dst)] > 9:
                         #drop packets
                         self.logger.info("exceeded 10 flows, dropping packet.")
                         return
