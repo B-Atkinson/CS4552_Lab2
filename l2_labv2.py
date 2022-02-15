@@ -61,15 +61,18 @@ class SimpleSwitch12(app_manager.RyuApp):
         
     def blockFlow(self, datapath, port, dst, src):
         instruction = [datapath.ofproto_parser.OFPInstructionActions(datapath.ofproto.OFPIT_CLEAR_ACTIONS, [])]
+        print(12)
         
         match = datapath.ofproto_parser.OFPMatch(in_port=port,eth_dst=dst,eth_src=src)
-                        
+        print(13)
         msg = datapath.ofproto_parser.OFPFlowMod(self.datapath, table_id = 0, priority = 1,
                             command = datapath.ofproto.OFPFC_ADD,
                             match = match,
                             instructions = instruction
                             )
+        print(14)
         datapath.send_msg(msg)
+        print(15)
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def _packet_in_handler(self, ev):
@@ -113,11 +116,14 @@ class SimpleSwitch12(app_manager.RyuApp):
                         self.icmpDict[(_ip.src,_ip.dst)] = 1
                         print(8)
                     
-                    # if self.icmpDict[match] > 3:
-                    #     #drop packets
-                    #     self.logger.info("exceeded 10 flows, dropping packet.")
-                    #     self.blockFlow(datapath, in_port, _ip.dst, _ip.src)
-                    #     return
+                    if self.icmpDict[(_ip.src,_ip.dst)] > 3:
+                        print(9)
+                        #drop packets
+                        self.logger.info("exceeded 10 flows, dropping packet.")
+                        print(10)
+                        self.blockFlow(datapath, in_port, _ip.dst, _ip.src)
+                        print(11)
+                        return
                 except NameError:
                     self.logger.info("come here!!!")
                     self.icmp_count = 1
